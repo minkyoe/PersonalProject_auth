@@ -7,6 +7,7 @@ const util = require('../../module/utils');
 const status = require('../../module/statusCode');
 const nodemailer = require('nodemailer');
 const _redis = require('redis');
+const secretEmail = require('../../config/email');
 const redisClient = _redis.createClient({
     host: "127.0.0.1",
     port: 6379 // redis 기본 포트번호
@@ -23,8 +24,8 @@ function createKeyVerify() {
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'kimmk0924@gmail.com',
-        pass: 'dnrjwl0415'
+        user: secretEmail.user,
+        pass: secretEmail.pass
     }
 });
 
@@ -43,7 +44,7 @@ router.post('/', (req, res) => {
     `;
 
     let insertUserQuery =
-        `
+    `
         INSERT INTO user
         VALUES(?,?,?,?,?,?,?);
     `;
@@ -90,7 +91,7 @@ router.post('/', (req, res) => {
                     } else {
                         // 이메일 전송 옵션 설정
                         let mailOptions = {
-                            from: 'kimmk0924@gmail.com',    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
+                            from: secretEmail.user,    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
                             to: email,                     // 수신 메일 주소
                             subject: '안녕하세요, 이메일 인증을 해주세요',   // 제목
                             text: 'That was easy!',  // 내용

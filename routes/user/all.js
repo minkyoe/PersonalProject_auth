@@ -15,7 +15,7 @@ const statusCode = require('../../module/statusCode');
 router.get('/', (req, res) => {
 
     let selectAllUserQuery =
-        `
+    `
         SELECT user_idx, user_id, user_email
         FROM user
     `;

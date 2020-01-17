@@ -6,7 +6,7 @@ const pool = require('../../config/dbPool');
 const util = require('../../module/utils');
 const status = require('../../module/statusCode');
 const nodemailer = require('nodemailer');
-
+const secretEmail = require('../../config/email');
 
 // 이메일 인증코드 생성
 function createKeyVerify() {
@@ -19,8 +19,8 @@ function createKeyVerify() {
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'kimmk0924@gmail.com',
-        pass: 'dnrjwl0415'
+        user: secretEmail.user,
+        pass: secretEmail.pass
     }
 });
 
@@ -86,14 +86,13 @@ router.post('/', (req, res) => {
                     } else {
                         // 이메일 전송 옵션 설정
                         let mailOptions = {
-                            from: 'kimmk0924@gmail.com',    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
+                            from: secretEmail.user,    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
                             to: email,                     // 수신 메일 주소
                             subject: '안녕하세요, 이메일 인증을 해주세요',   // 제목
                             text: 'That was easy!',  // 내용
                             html: '<p>아래의 코드를 앱에서 입력해주세요 !</p>' +
                                 "<h1>" + verifyCode + "</h1>"
                         };
-                        //"<a href='http://localhost:3000/auth?email=" + email + "&key=" + verifyCode + "'>인증하기</a>"
 
                         // 이메일 전송
                         transporter.sendMail(mailOptions, function (err, res) {

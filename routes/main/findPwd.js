@@ -6,12 +6,13 @@ const pool = require('../../config/dbPool');
 const util = require('../../module/utils');
 const status = require('../../module/statusCode');
 const nodemailer = require('nodemailer');
+const secretEmail = require('../../config/email');
 
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'kimmk0924@gmail.com',
-        pass: 'dnrjwl0415'
+        user: secretEmail.user,
+        pass: secretEmail.pass
     }
 });
 
@@ -42,7 +43,7 @@ router.post('/', (req, res) => {
     `;
 
     let updateUserQuery =
-        `
+    `
         UPDATE user
         SET user_pwd = ?, user_pwd_salt = ?
         WHERE user_id = ?
@@ -84,7 +85,7 @@ router.post('/', (req, res) => {
 
                 // 이메일 전송 옵션 설정
                 let mailOptions = {
-                    from: 'kimmk0924@gmail.com',    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
+                    from: secretEmail.user,    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
                     to: email,                     // 수신 메일 주소
                     subject: '안녕하세요, 임시비밀번호 발급해드립니다.',   // 제목
                     text: 'That was easy!',  // 내용

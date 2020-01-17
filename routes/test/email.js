@@ -6,6 +6,7 @@ const util = require('../../module/utils');
 const status = require('../../module/statusCode');
 const nodemailer = require('nodemailer');
 const _crypto = require('crypto');
+const secretEmail = require('../../config/email');
 const _redis = require('redis');
 const redisClient = _redis.createClient({
     host: "127.0.0.1",
@@ -23,22 +24,21 @@ function createKeyVerify() {
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'kimmk0924@gmail.com',
-        pass: 'dnrjwl0415'
+        user: secretEmail.user,
+        pass: secretEmail.pass
     }
 });
 
 // 인증코드 만료 후 이메일로 인증코드 재전송
 // 1. client가 아이디를 보낸다.
 // 2. 존재하는 유저가 있다면 해당 이메일로 다시 인증코드 생성해서 전송
-
 router.post("/", function (req, res, next) {
 
     let { id } = req.body;
     let verifyCode = createKeyVerify();
 
     let selectUserQuery =
-        `
+    `
         SELECT *
         FROM user
         WHERE user_id = ?
@@ -78,7 +78,7 @@ router.post("/", function (req, res, next) {
             } else {
                 // 이메일 전송 옵션 설정
                 let mailOptions = {
-                    from: 'kimmk0924@gmail.com',    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
+                    from: secretEmail.user,    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
                     to: selectedUser[0].user_email,                     // 수신 메일 주소
                     subject: '안녕하세요, 인증코드를 재전송 해드립니다',   // 제목
                     text: 'That was easy!',  // 내용

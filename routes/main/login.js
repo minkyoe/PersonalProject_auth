@@ -18,19 +18,18 @@ let option = {
 // 2. 서버에서 salt값을 꺼내와 pwd를 암호화한다.
 // 3. 서버에 저장된 pwd와 일치한지 확인한다.
 // 3. 일치하면 토큰을 발급해준다. (client는 이것을 저장해두었다가 사용)
-
 router.post('/', (req, res) => {
 
     let { id, pwd } = req.body;
     let selectSaltQuery =
-        `
+    `
         SELECT user_pwd_salt
         FROM user 
         WHERE user_id = ?
     `;
 
     let comparePwdQuery =
-        `
+    `
         SELECT user_pwd
         FROM user
         WHERE user_pwd = ?
