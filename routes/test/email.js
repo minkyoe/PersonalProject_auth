@@ -32,6 +32,7 @@ let transporter = nodemailer.createTransport({
 // 인증코드 만료 후 이메일로 인증코드 재전송
 // 1. client가 아이디를 보낸다.
 // 2. 존재하는 유저가 있다면 해당 이메일로 다시 인증코드 생성해서 전송
+
 router.post("/", function (req, res, next) {
 
     let { id } = req.body;

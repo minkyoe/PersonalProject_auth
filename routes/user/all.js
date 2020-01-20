@@ -58,6 +58,7 @@ router.get('/', (req, res) => {
                 let resultArray = [];
                 for (var i in allUserData) {
                     let arrayObject = {};
+                    arrayObject.idx = allUserData[i].user_idx;
                     arrayObject.id = allUserData[i].user_id;
                     arrayObject.email = allUserData[i].user_email;
                     resultArray.push(arrayObject);
@@ -161,7 +162,7 @@ router.post('/edit/:target', (req, res) => {
                 if (req.params.target == "id") message = "이미 존재하는 아이디입니다.";
                 else if (req.params.target == "email") message = "이미 존재하는 이메일입니다.";
                 res.status(200).send(
-                    util.successTrue(statusCode.OK, message, false)
+                    util.successTrue(statusCode.ALREADY_EXIST, message, false)
                 );
                 connection.release();
             }
@@ -175,9 +176,8 @@ router.post('/edit/:target', (req, res) => {
 
 
 // 유저 삭제
-router.post('/delete', (req, res) => {
-
-    let { id } = req.body;
+router.delete('/delete/:id', (req, res) => {
+    let { id } = req.params;
 
     let selectUserQuery = `SELECT * FROM user WHERE user_id = ?`;
     let deleteUserQuery = `DELETE FROM user WHERE user_id = ?`;

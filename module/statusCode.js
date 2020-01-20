@@ -4,6 +4,7 @@ module.exports = {
     EXPIRED: 202,
     NOT_CORRECT: 203,
     NO_CONTENT: 204,
+    ALREADY_EXIST: 205,
     BAD_REQUEST: 400,
     UNAUTHORIZED: 401,
     FORBIDDEN: 403,
