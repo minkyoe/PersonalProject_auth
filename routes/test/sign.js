@@ -46,7 +46,7 @@ router.post('/', (req, res) => {
     let insertUserQuery =
     `
         INSERT INTO user
-        VALUES(?,?,?,?,?,?,?);
+        VALUES(?,?,?,?,?,?);
     `;
 
     let taskArray = [
@@ -81,7 +81,7 @@ router.post('/', (req, res) => {
                 connection.release();
 
             } else { // db에 저장된 user가 없을 때
-                connection.query(insertUserQuery, [null, id, email, pwd, 0, 0, salt], (err, data) => { // salt값 일단 0으로 & 인증코드 db저장X redis에 저장O
+                connection.query(insertUserQuery, [null, id, email, pwd, 0, salt], (err, data) => { // salt값 일단 0으로 & 인증코드 db저장X redis에 저장O
                     if (err) {
                         res.status(200).send(
                             util.successFalse(status.DB_ERROR, "DB Error")
